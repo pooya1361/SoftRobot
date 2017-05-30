@@ -94,7 +94,7 @@ const Item = React.createClass({
     },
 
     validateForm() {
-        if (!this.validateDate(this.state.date)) {
+        if (!this.validateDate((this.state.date).substring(0, 10))) {
             alert(this.state.date + " is not a valid date.");
             return false;
         }
@@ -234,6 +234,8 @@ const Item = React.createClass({
                 cursor: 'pointer',
             },
         };
+
+        if (!this.props.allUsers) return (<span />) ;
 
         if (this.state.mode === "edit" || this.state.mode === "add") {
             return (

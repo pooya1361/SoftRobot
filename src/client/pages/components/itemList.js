@@ -65,6 +65,7 @@ const ItemList = React.createClass({
             items: [],
             timeout: false,
             addForm: false,
+            loading: true,
         })
     },
 
@@ -78,6 +79,7 @@ const ItemList = React.createClass({
             items: [],
             timeout: false,
             addForm: false,
+            loading: true,
         });
         var x = api.XMLHttpRequest();
         x.onreadystatechange = function () {
@@ -107,17 +109,18 @@ const ItemList = React.createClass({
             console.log(y.readyState, y.status, y.responseText);
             //if (y.status !== 0)  {
             this.setState({
-                users: JSON.parse(y.responseText)
+                users: JSON.parse(y.responseText),
+                loading: false,
             });
             //}
         }.bind(this);
-        y.timeout = 3000;
+        y.timeout = 5000;
         y.ontimeout = function () {
+            this.getUsers();
             console.log('Timeout error for getUsers');
             this.setState({
-                timeout: true,
+                timeout: false,
             });
-            this.getUsers();
         }.bind(this);
         y.open("GET", "/getusers", false);
         y.send();
@@ -131,7 +134,7 @@ const ItemList = React.createClass({
 
     getDate(d) {
         //var d = new Date();
-        return d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) ;
+        return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
     },
 
     makeList() {
@@ -152,6 +155,9 @@ const ItemList = React.createClass({
                 )
             })
         }
+        // this.setState({
+        //     loading: false,
+        // });
         return result;
     },
 
@@ -170,7 +176,7 @@ const ItemList = React.createClass({
                     userId="0"
                     active={false}
                     allUsers={this.state.users}
-                    mode = "edit"
+                    mode="edit"
                     buttonEvent={this.getItems} />
             )
         }
@@ -185,6 +191,14 @@ const ItemList = React.createClass({
                     <input key='3' type="button" value="Hämta igen" onClick={this.getItems} />
                 </div>
             )
+        } else if (!this.state.users || this.state.users.length === 0) {
+            return (
+                <div key='1' style={this.styles.errorMessage} >
+                    <h1>LOADING...</h1>
+                    <br />
+                    <img src="https://s-media-cache-ak0.pinimg.com/originals/cb/05/42/cb05420fec7a12bb752da11df0fb553f.gif" alt="" />
+                </div>
+            );
         } else {
             return (
                 <div key='1' style={this.styles.menuItem} >
