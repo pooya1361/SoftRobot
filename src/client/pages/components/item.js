@@ -81,7 +81,34 @@ const Item = React.createClass({
         )
     },
 
+    validateDate(d) {
+        const IsoDateRe = new RegExp("^([0-9]{4})-([0-9]{2})-([0-9]{2})$");
+        var matches = IsoDateRe.exec(d);
+        if (!matches) return false;
+
+        var composedDate = new Date(matches[1], (matches[2] - 1), matches[3]);
+
+        return ((composedDate.getMonth() == (matches[2] - 1)) &&
+            (composedDate.getDate() == matches[3]) &&
+            (composedDate.getFullYear() == matches[1]));
+    },
+
+    validateForm() {
+        if (!this.validateDate(this.state.date)) {
+            alert(this.state.date + " is not a valid date.");
+            return false;
+        }
+
+        if (this.state.text.length === 0) {
+            alert("Please enter text");
+            return false;
+        }
+
+        return true;
+    },
+
     saveChange() {
+        if (this.state.loading || !this.validateForm()) return;
         this.setState({
             loading: true,
         });
