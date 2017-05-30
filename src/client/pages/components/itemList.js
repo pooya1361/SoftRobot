@@ -77,6 +77,7 @@ const ItemList = React.createClass({
             users: [],
             items: [],
             timeout: false,
+            addForm: false,
         });
         var x = api.XMLHttpRequest();
         x.onreadystatechange = function () {
@@ -130,7 +131,7 @@ const ItemList = React.createClass({
 
     getDate(d) {
         //var d = new Date();
-        return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+        return d.getFullYear() + '-' + ('0' + (d.getMonth()+1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) ;
     },
 
     makeList() {
@@ -163,13 +164,14 @@ const ItemList = React.createClass({
             return (
                 <Item id="-1"
                     text=""
-                    date=""
+                    date={this.getDate(new Date())}
                     name=""
                     user=""
-                    userId="-1"
+                    userId="0"
                     active={false}
                     allUsers={this.state.users}
-                    mode = "edit" />
+                    mode = "edit"
+                    buttonEvent={this.getItems} />
             )
         }
     },

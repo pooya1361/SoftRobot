@@ -11,6 +11,7 @@ const Item = React.createClass({
             date: this.props.date,
             text: this.props.text,
             active: this.props.active,
+            loading: false,
         })
     },
 
@@ -82,7 +83,7 @@ const Item = React.createClass({
 
     saveChange() {
         this.setState({
-            mode: 'display',
+            loading: true,
         });
         const item = {
             active: this.state.active,
@@ -97,9 +98,13 @@ const Item = React.createClass({
         var xhr = api.XMLHttpRequest();
         xhr.onreadystatechange = function () {
             console.log(xhr.readyState, xhr.status, xhr.responseText);
-            if (xhr.status !== 0) {
-                console.log(xhr.responseText);
-                console.log('Item saved!');
+            if (xhr.status === 400) {
+                this.setState({
+                    mode: 'display',
+                    loading: false,
+                });
+                alert('Item saved!');
+                this.props.buttonEvent();
             }
         }.bind(this);
         xhr.timeout = 9000;
@@ -107,9 +112,12 @@ const Item = React.createClass({
             console.log('Timeout error for save item');
             this.setState({
                 timeout: true,
+                loading: false,
             });
+            this.saveChange();
+            //alert('Timeout! Try again');
         }.bind(this);
-        xhr.open("GET", "/putitem", false);
+        xhr.open("PUT", "/putitem", false);
         xhr.send(this.state.mode === "edit" ? item : null);
 
     },
@@ -209,7 +217,9 @@ const Item = React.createClass({
                     <section style={styles.stage} onClick={this.handleActiveChange} >
                         <figure style={this.state.active ? styles.active : styles.deactive} />
                     </section>
-                    <img style={styles.editIcon} src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/floppy-512.png' onClick={this.saveChange} />
+                    <img style={styles.editIcon} src={this.state.loading ?
+                        'https://68.media.tumblr.com/695ce9a82c8974ccbbfc7cad40020c62/tumblr_o9c9rnRZNY1qbmm1co1_500.gif' :
+                        'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/floppy-512.png'} onClick={this.saveChange} />
                 </div>
             );
         } else {
