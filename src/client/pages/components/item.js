@@ -35,7 +35,8 @@ const Item = React.createClass({
     componentDidMount() {
         this.setState({
             mode: this.props.mode === '' ? 'display' : this.props.mode,
-            //user: this.props.user,
+            id: this.props.id,
+            user: this.props.user,
             userId: this.props.userId,
             date: this.props.date,
             text: this.props.text,
@@ -114,7 +115,7 @@ const Item = React.createClass({
         });
         const item = {
             active: this.state.active,
-            date: Date.parse(this.state.date),
+            date: this.state.date,
             id: this.state.id,
             text: this.state.text,
             userId: this.state.userId,
@@ -125,7 +126,7 @@ const Item = React.createClass({
         var xhr = api.XMLHttpRequest();
         xhr.onreadystatechange = function () {
             console.log(xhr.readyState, xhr.status, xhr.responseText);
-            if (xhr.status === 400) {
+            if (xhr.status === 200) {
                 this.setState({
                     mode: 'display',
                     loading: false,
@@ -145,7 +146,7 @@ const Item = React.createClass({
             //alert('Timeout! Try again');
         }.bind(this);
         xhr.open("PUT", "/putitem", false);
-        xhr.send(this.state.mode === "edit" ? item : null);
+        xhr.send(this.state.mode === "edit" ? JSON.stringify(item) : null);
 
     },
 
@@ -236,7 +237,7 @@ const Item = React.createClass({
         };
 
         if (!this.props.allUsers) return (<span />) ;
-
+        
         if (this.state.mode === "edit" || this.state.mode === "add") {
             return (
                 <div key={this.props.id} style={styles.row}>

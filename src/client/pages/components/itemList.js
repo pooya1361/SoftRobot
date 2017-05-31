@@ -151,7 +151,8 @@ const ItemList = React.createClass({
                         user={this.getName(data.userId)}
                         userId={data.userId}
                         active={data.active}
-                        allUsers={this.state.users} />
+                        allUsers={this.state.users} 
+                        buttonEvent={this.getItems} />
                 )
             })
         }
