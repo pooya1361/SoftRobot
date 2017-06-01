@@ -1,6 +1,7 @@
 import React from 'react';
-import api from '../../../../data/softrobot_test_api.min.js';
+import api from '../api/softrobot_test_api.min.js';
 import Item from './item';
+import addIcon from '../img/add.png';
 
 const ItemList = React.createClass({
     styles: {
@@ -218,7 +219,7 @@ const ItemList = React.createClass({
 
                     <div key='1000' style={this.styles.footer}>
                         {this.showAddItemForm()}
-                        <img style={this.styles.addIcon} src={this.state.addForm ? "https://images.onlinelabels.com/images/clip-art/molumen/molumen_red_round_error_warning_icon.png" : "../../../../public/img/add.png"} onClick={this.addItemForm} />
+                        <img style={this.styles.addIcon} src={this.state.addForm ? "https://images.onlinelabels.com/images/clip-art/molumen/molumen_red_round_error_warning_icon.png" : addIcon} onClick={this.addItemForm} />
                     </div>
                 </div>
             );

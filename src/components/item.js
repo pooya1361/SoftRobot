@@ -1,5 +1,5 @@
 import React from 'react';
-import api from '../../../../data/softrobot_test_api.min.js';
+import api from '../api/softrobot_test_api.min.js';
 
 const Item = React.createClass({
     getInitialState() {
