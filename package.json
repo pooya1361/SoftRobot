@@ -2,7 +2,7 @@
   "name": "softrobot",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/pooya1361/SoftRobot",
+  "homepage": "https://pooya1361.github.io/SoftRobot",
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
